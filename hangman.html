@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <style>
+
+        </style>
+        <script>
+            const words = [["elephant"], ["chemistry"], ["molecule"],["computer", "science"], ["fairy", "tale"],
+               ["rhode", "island"], ["mathematics"], ["machine", "learning"], ["happiness"], ["stephen", "king"],
+            ["pride", "and", "prejudice"], ["aphrodite"] ,["open","house"],["embedded","systems"],["donald","trump"] ];
+        
+               let chosenWord =[];
+               let imgNum = 0;
+        function generateWord(){
+            let indexWord = Math.floor(Math.random() * 15);
+            let word = words[indexWord];
+            let posLeft = 50;
+            for(let i=0; i<word.length; i++){
+                for(let j=0; j< word[i].length; j++){
+                    let letter = document.createElement('div');
+                    letter.id = 'i' + i +'j' + j;
+                    letter.style.cssText = 'border-bottom-style: solid; width: 20px; position: absolute; top: 100px; left: ' + posLeft + 'px';
+                    document.body.appendChild(letter);
+                    posLeft+=30;
+                }
+                let space = document.createElement('div');
+                space.style.cssText = 'width: 20px; position: absolute; top: 100px; left: ' + posLeft + 'px';
+                document.body.appendChild(space);
+                posLeft+=30;
+            }
+            chosenWord=word;
+
+        }
+
+        function reveal(){
+            let guess = document.getElementById('guess');
+            let count = 0;
+            if(guess.value.length == 1){
+                for(let i = 0; i< chosenWord.length; i++){
+                    for(let j=0; j<chosenWord[i].length; j++){
+                        if(chosenWord[i][j] == guess.value){
+                            let letter = document.getElementById('i' + i +'j' + j);
+                            letter.innerText = guess.value;
+                            count++;
+                        }
+                    }
+                }
+            }
+            if(guess.value.length > 1){
+                for(let i=0; i<chosenWord.length; i++){
+                    if(chosenWord[i]==guess.value){
+                        for(let j=0; j<chosenWord[i].length; j++){
+                            let letter = document.getElementById('i' + i +'j' + j);
+                            letter.innerText = guess.value[j];                        
+                        }
+                        count++;
+                    }
+                }
+            }
+            if(count == 0){
+                lostPoint();
+            }
+        }
+        function lostPoint(){
+            if(imgNum ==6){
+                youLost();
+            }
+            else{
+            let image = document.getElementById('hang');
+            imgNum ++;
+            image.src = "hang" + (imgNum) +".png";
+            }
+        }
+
+        function youLost(){
+            let guess = document.getElementById('guess');
+            guess.disabled = true;
+            alert('you lost the game');
+        }
+        </script>
+    </head>
+    <body onload = "generateWord()">
+        <input style="position: absolute; top: 200px" id="guess"></input>
+        <button style="position: absolute;top:200px;left:250px" onclick="reveal()">guess letter or word</button>
+        <img src = "hang0.png" style="position: absolute;left:500px" id ="hang">
+    </body>
+</html>
